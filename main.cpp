@@ -5,7 +5,7 @@
 using namespace sf;
 using namespace std;
 
-int main()
+int main() 
 {
     // setup
     RenderWindow window(VideoMode(800, 600), "SFML works!");
@@ -24,6 +24,13 @@ int main()
             /** (5pts)
                 Cuando se de click izquierdo, se deberá actualizar el objetivo del cuadrado a la posición del mouse.
             */
+        
+
+                if (event.mouseButton.button == Mouse::Left)
+                {
+                    rect.setObjective();
+
+                }
 
         }
 

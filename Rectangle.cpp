@@ -1,9 +1,9 @@
 #include "Rectangle.hpp"
 #include <math.h>
-#include <iostream>
+#include <iostream> 
 using namespace std;
 
-Rectangle::Rectangle(Vector2f size)
+Rectangle::Rectangle(Vector2f size) 
 {
     /**  (4pts)
         Inicializa las variables: 
@@ -12,6 +12,11 @@ Rectangle::Rectangle(Vector2f size)
         - objective: un Vector2f con valores (0, 0).
         - Haz que el cuadrado se pinte de un color.
     */
+    this->shape = RectangleShape (size); 
+    this-> speed = Vector2f (0.f, 0.f);
+    this->objective = Vector2f(0.f, 0.f);
+    this->shape.setFillColor(Color::Red); 
+ 
 }
 
 Rectangle::Rectangle(Vector2f size, Vector2i position)
@@ -24,6 +29,13 @@ Rectangle::Rectangle(Vector2f size, Vector2i position)
         - Haz que el cuadrado se pinte de un color.
         - Haz que el cuadrado esté en la posición position.
     */
+
+    this->shape = RectangleShape (size); 
+    this-> speed = Vector2f (0.f, 0.f);
+    this->objective = Vector2f(position);
+    this->shape.setFillColor(Color::Red); 
+ 
+
 }
 
 void Rectangle::update()
@@ -34,7 +46,23 @@ void Rectangle::update()
         Si no, píntalo de rojo.
             - Puedes saber si está a 5 pixeles del objetivo si la diferencia entre la coordeanda x del cuadrado y la x del objetivo es menor a 5 y lo mismo con la y.
     */
-}
+
+   if (this->shape.getPosition().y + this->shape.getSize().y <= 600 || this->shape.getPosition().x + this->shape.getSize().x >= 800)
+    {
+        this-> shape.move (this->speed);
+        float x= this->shape.getPosition().x;
+        float y= this->shape.getPosition().y;
+        int mouseX = Mouse::getPosition().x;
+        int mouseY = Mouse::getPosition().y;
+
+        if (x-mouseX<5 && y-mouseY<5)
+    {
+        this->shape.setFillColor(Color::Green);
+    }
+    }
+
+
+} 
 
 void Rectangle::setObjective(Vector2f objective)
 {
@@ -53,6 +81,24 @@ void Rectangle::setObjective(Vector2f objective)
     /**Reto de valientes (0.5 décimas extra)
         Haz que el centro del cuadrado se posicione donde se dio click en lugar de que la esquina superior izquierda se posicione donde se dio click.
     */
+   this-> objective = objective;
+    float x= this->shape.getPosition().x;
+    float y= this->shape.getPosition().y;
+    int mouseX = Mouse::getPosition().x;
+    int mouseY = Mouse::getPosition().y;
+    
+    int speedx = mouseX-x;
+    int speedy = mouseY-y; 
+    int speedy2 = (speedy)*(speedy);
+    int speedx2= (speedx)*(speedx);
+
+    int h = sqrt(speedx+speedy);
+
+    int moveX = (speedx/h)*speed.x;  
+    int moveY = (speedx/h)*speed.y;  
+
+    this-> shape.move ({moveX, moveY});
+
 }
 
 void Rectangle::drawTo(RenderWindow &window)
